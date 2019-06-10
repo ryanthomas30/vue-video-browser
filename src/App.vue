@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<SearchBar @termChange="onTermChange" ></SearchBar>
-		<VideoList />
+		<VideoList :videos="videos" ></VideoList>
 	</div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
 		SearchBar,
 		VideoList
 	},
+	data() {
+		return {
+			videos: []
+		}
+	},
 	methods: {
 		async onTermChange(searchTerm) {
 			const resp = await axios.get('https://www.googleapis.com/youtube/v3/search', {
@@ -27,7 +32,8 @@ export default {
 					q: searchTerm
 				}
 			})
-			console.log('resp:', resp)
+			console.log('resp.data.items:', resp.data.items)
+			this.videos = resp.data.items
 		}
 	}
 
